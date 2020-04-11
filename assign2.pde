@@ -143,10 +143,10 @@ void draw() {
     
     //bump into soldier
     if (groundhog_X1 < soldierX + SOLDIER_W && groundhog_X1 + GROUNDHOG_W > soldierX){
-      if (groundhog_Y1 == soldierY){
-      groundhog_X1 = groundhog_X0;
-      groundhog_Y1 = groundhog_Y0;
-      lifeLeft -= 1;
+      if (groundhog_Y1 < soldierY + SOLDIER_H && groundhog_Y1 + GROUNDHOG_H> soldierY){
+        groundhog_X1 = groundhog_X0;
+        groundhog_Y1 = groundhog_Y0;
+        lifeLeft -= 1;
     }}
     
     if (lifeLeft <= 0){
