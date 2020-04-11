@@ -12,6 +12,8 @@ final int grid = 80;
 final int LIFE_T = 2;
 final int CABBAGE_W = 80;
 final int CABBAGE_H = 80;
+final int BUTTON_W = 144;
+final int BUTTON_H = 60;
 
 //boolean
 boolean right = false ;
@@ -24,9 +26,12 @@ final int GAME_RUN = 1;
 final int GAME_LOSE = 2;
 int gameState = GAME_START;
 
-int robotX, robotY, soldierX, soldierY, groundhog_X0, groundhog_Y0, groundhog_X1, groundhog_Y1, lifeLeft, cabbageX, cabbageY;
+int robotX, robotY, soldierX, soldierY, groundhog_X0, groundhog_Y0, groundhog_X1, groundhog_Y1;
+int lifeLeft, cabbageX, cabbageY;
+int buttonX, buttonY;
 
-PImage bg, groundhogIdle, life, robot, soil, soldier, cabbage;
+PImage bg, groundhogIdle, life, robot, soil, soldier, cabbage, title;
+PImage startNormal, startHovered, restartNormal, restartHovered, gameover;
 
 void setup() {
 	size(640, 480);
@@ -37,6 +42,12 @@ void setup() {
   soil = loadImage("img/soil.png");
   soldier = loadImage("img/soldier.png");
   cabbage = loadImage("img/cabbage.png");
+  title = loadImage("img/title.jpg");
+  startNormal = loadImage("img/startNormal.png");
+  startHovered = loadImage("img/startHovered.png");
+  restartNormal = loadImage("img/restartNormal.png");
+  restartHovered = loadImage("img/restartHovered.png");
+  gameover = loadImage("img/gameover.jpg");
   imageMode(CORNER);
 
   //set up groundhog position
@@ -55,11 +66,28 @@ void setup() {
   
   //set up life
   lifeLeft = 2;
+  
+  //set up buttons
+  buttonX = 248;
+  buttonY = 360;
 }
 
 void draw() {
 	switch (gameState){
-		case GAME_START:
+    case GAME_START:
+    //put bg
+    image(title, 0, 0, width, height);
+    image(startNormal, buttonX, buttonY, BUTTON_W, BUTTON_H);
+    
+    //button
+    if (mouseX > buttonX && mouseX < buttonX + BUTTON_W && mouseY > buttonY && mouseY < buttonY + BUTTON_H){
+      image(startHovered, buttonX, buttonY, BUTTON_W, BUTTON_H);
+      if(mousePressed == true){
+        gameState = GAME_RUN;
+    }}
+    break;
+    
+		case GAME_RUN:
     //put bg
     image(bg, 0, 0, width, height);
     
@@ -121,13 +149,25 @@ void draw() {
       lifeLeft -= 1;
     }}
     
-    if (lifeLeft < 0){
+    if (lifeLeft <= 0){
       gameState = GAME_LOSE;
     }
     break;
-		// Game Run
 
-		// Game Lose
+    case GAME_LOSE:
+    //put bg
+    image(gameover, 0, 0, width, height);
+    image(restartNormal, buttonX, buttonY, BUTTON_W, BUTTON_H);
+    
+    //button
+    if (mouseX > buttonX && mouseX < buttonX + BUTTON_W && mouseY > buttonY && mouseY < buttonY + BUTTON_H){
+      image(restartHovered, buttonX, buttonY, BUTTON_W, BUTTON_H);
+      if(mousePressed == true){
+        lifeLeft = LIFE_T;
+        gameState = GAME_RUN;
+    }}
+    
+    break;
 }}
 
 void keyPressed(){
